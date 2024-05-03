@@ -4,8 +4,6 @@
 __author__      = 'Roy Gardner'
 __copyright__   = 'Copyright 2022, Roy Gardner'
 
-import angular_distance as ad
-
 import copy
 import csv
 from datetime import datetime, timedelta
