@@ -21,3 +21,7 @@ model/segments_dict.json
 model/segments_matrix.json
 model/topic_segment_matrix.json
 model/topics_dict.json
+angular_distance_so_files/.DS_Store
+angular_distance_so_files/angular_distance_linux/.DS_Store
+angular_distance_so_files/angular_distance_macos_arm/.DS_Store
+angular_distance_so_files/angular_distance_macos_intel/.DS_Store
