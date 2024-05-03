@@ -27,3 +27,4 @@ angular_distance_so_files/angular_distance_macos_arm/.DS_Store
 angular_distance_so_files/angular_distance_macos_intel/.DS_Store
 .ipynb_checkpoints/constitution_comparison-checkpoint.ipynb
 _library/__pycache__/packages.cpython-39.pyc
+.DS_Store
