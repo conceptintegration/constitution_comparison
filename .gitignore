@@ -28,3 +28,15 @@ angular_distance_so_files/angular_distance_macos_intel/.DS_Store
 .ipynb_checkpoints/constitution_comparison-checkpoint.ipynb
 _library/__pycache__/packages.cpython-39.pyc
 .DS_Store
+model_all/documents_dict.json
+model_all/encoded_segments.json
+model_all/encoded_topics.json
+model_all/segment_encodings.json
+model_all/segments_dict.json
+model_all/segments_matrix.json
+model_all/topic_encodings.json
+model_all/topic_segment_matrix.json
+model_all/topics_dict.json
+use-4/saved_model.pb
+use-4/variables/variables.data-00000-of-00001
+use-4/variables/variables.index
