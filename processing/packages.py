@@ -1,8 +1,6 @@
 #!/bin/python
 # -*- coding: utf-8 -*-
 
-__author__      = 'Roy Gardner'
-__copyright__   = 'Copyright 2022, Roy Gardner'
 
 import angular_distance as ad
 
@@ -26,5 +24,5 @@ from scipy.spatial.distance import *
 
 import tensorflow as tf
 import tensorflow_hub as hub
-import time
 
+import time

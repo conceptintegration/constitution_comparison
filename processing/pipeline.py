@@ -2,126 +2,94 @@
 # -*- coding: utf-8 -*-
 
 __author__      = 'Roy Gardner'
-__copyright__   = 'Copyright 2023, Roy Gardner'
+__copyright__   = 'Copyright 2025, Roy Gardner and Sally Gardner'
 
+"""
+Pipeline for processing various file types using optional segmentation and encoding using a semantic similarity model.
+
+Supported file types and their processing modules are:
+
+- CCP constitution XML files: process_constitutions.py
+- Text documents of various types: process_documents.py
+- Excel files: process_xlsx.py
+- CSV files: process_csv.py
+
+The core file set is CCP constitutions. Other corpora are provided to illustrate the processing of other file types, segmentation,
+and multilingual capabilities.
+
+spaCy English and Spanish language models are used for text segmentation. Various version of the models are provided. 
+Segmentation is not supported for constitution XML
+
+Google Universal Sentence Encoders (USE v4 for English, USE multilingual v3 for Spanish) provide encoding of text segments.
+
+Configuration dictionaries supply the following fields for all file types:
+
+'run': True|False. True if want to run processor else false
+'processor': Processor module name. The processor .py file must be imported.
+'data_path': Path to source files containing text to be segmented and encoded.
+'model_path': Path to destination of segments, encodings, and supporting files.
+'encoder_path': Path to encoder.
+'spacy_path': Path to spaCy model used for segmentation.
+'label': Name of process.
+'description':Description of process.
+
+The configuration for CCP XML files contain this customisable field:
+'element_types': ['body','list'] which define the XML elements containing the text sections that are encoded.
+
+The configurations for CCP XML files contain these customisable fields:
+'data_fields': A list of names of columns that contain text to process.
+'id_field': The column name to use as a row identifier. If empty or missing the row number is used.
+
+NOTE: Excel and CSV fields must contain a header row containing column names.
 
 """
 
-Updated CCP processing based on:
-
-1. XML files
-2. Revised ontology
-
-
-Data sources:
-
-- constitutions_xml: a directory of CCP constitution XML files. File names provide the document IDs
-- const_list.json: List of constitutions with metadata obtained from the constituteproject.org API.
-  Used to filter constitution XLSX files so only use in-force and build metadata_dict
-- metadata_list.xml: From constituteproject.org. Not used because metadata are obtained from const_list
-- revised_ontology.csv: Revised ontology data used to generate topic data model files
-
-Model:
-    Dictionaries:
-
-    - topics_dict: key is a topic key, value is dictionary containing labels path, description, and keywords
-    - documents_dict: key is a constitution ID (used to prefix segment IDs), value is a document name, and metadata
-    - segments_dict: key is a segment ID (<doc_id>/<sentence_number>), value is sentence text
-
-    Lists:
-
-    - encoded_segments: List of IDs of encoded segments
-    - segment_encodings: List of encoding vectors for encoded segments in same order so can use index.
-    - encoded_topics: List of IDs of encoded topics (all of them)
-    - topic_encodings: List of encoding vectors for encoded topics in same order so can use index.
-  
-    Matrices:
-
-    - topic_segment_matrix: Similarity matrix with topics in rows and segments in columns
-
-Dependencies:
-
-- USE-4 (or some other encoder)
-
-
-"""
-
-import os
-os.environ['KMP_DUPLICATE_LIB_OK']='True'
-
-import process_topics
-import process_documents
-import process_segments
-
+import process_constitutions
+import process_ontology
 
 from packages import *
-from nlp import *
+from utilities import build_topic_segments_matrix
 
-def main():
+def main(config):
 
-    model_path = './model/'
+    print(f"Processing constitutions\n")
+    segment_encodings = config['constitutions']['processor'].process(config)
 
-    encoder_path = '../../_external_models/'
-    # Load an encoder
-    encoder = hub.load(encoder_path + 'use-4')
-
-    # Process topics *********************************************************************
-    print('Processing topics…')
-    # This is the topic tree from the Constitute Project site
-    data_path = 'data/'
-
-    topics_dict,topic_encodings,encoded_topics = process_topics.process(data_path,encoder)
-    model_filename = model_path + 'topics_dict.json'
-    with open(model_filename, 'w') as f:
-        json.dump(topics_dict, f)
-        f.close()
-    model_filename = model_path + 'topic_encodings.json'
-    with open(model_filename, 'w') as f:
-        json.dump(topic_encodings, f)
-        f.close()
-    model_filename = model_path + 'encoded_topics.json'
-    with open(model_filename, 'w') as f:
-        json.dump(encoded_topics, f)
-        f.close()
-    print('Finished processing and serialising topics:', len(topics_dict), len(encoded_topics))
-
-    # Process documents *****************************************************************
-    print('Processing documents…')
-    documents_dict = process_documents.process(data_path)
-    model_filename = model_path + 'documents_dict.json'
-    with open(model_filename, 'w') as outfile:
-        json.dump(documents_dict, outfile)
-        outfile.close() 
-    print('Finished processing and serialising documents:', len(documents_dict))
+    print(f"Processing ontotogy\n")
+    topic_encodings = config['ontology']['processor'].process(config)
     
-    # Process segments ******************************************************************
-    print('Processing segments…')
-    segments_dict,segment_encodings,encoded_segments = process_segments.process(documents_dict,data_path,encoder)
-    model_filename = model_path + 'segments_dict.json'
-    with open(model_filename, 'w') as f:
-        json.dump(segments_dict, f)
-        f.close()
-    model_filename = model_path + 'segment_encodings.json'
-    with open(model_filename, 'w') as f:
-        json.dump(segment_encodings, f)
-        f.close()
-    model_filename = model_path + 'encoded_segments.json'
-    with open(model_filename, 'w') as f:
-        json.dump(encoded_segments, f)
-        f.close()
-    print('Finished processing and serialising segments:', len(segments_dict))
+    # Build the topic-segment matrix
+    topic_segment_matrix = build_topic_segments_matrix(topic_encodings,segment_encodings)
+    filename = config['shared']['model_path'] +'topic_segment_matrix.json'
+    with open(filename, 'w') as f:
+        json.dump(np.array(topic_segment_matrix).tolist(), f)
 
-    # Building topic_segment similarity matrix ********************************************************
-    print('Building topics-segments similarity matrix…')
-    start_time = time.time()
-    sim_matrix = cdist(topic_encodings, segment_encodings,ad.angular_distance)
-    sim_matrix = np.array(sim_matrix).tolist()
-    model_filename = model_path + 'topic_segment_matrix.json'
-    with open(model_filename, 'w') as outfile:
-        json.dump(sim_matrix, outfile)
-        outfile.close() 
-    print(time.time() - start_time)
-    print('Finished building and serialising topics-segments similarity matrix')
- 
+    print('All done')
+
 if __name__ == '__main__':
-    main()
+
+    config = {}
+
+    config['shared'] = {
+        'data_path': '../data/',
+        'model_path': '../model/',
+        'encoder_path': '../use-4/',
+    }
+
+    # Configuration for processing constitutions XML and CCP ontology
+    config['constitutions'] = {
+        'processor': process_constitutions,
+        'constitutions_path': 'constitutions_xml/',
+        'element_types': ['body','list'], # The XML elements we are processing
+        'metadata_file': 'metadata.csv'
+    }
+
+    config['ontology'] = {
+        'processor': process_ontology,
+        'ontology_file': 'revised_ontology.csv',
+        'key_field':'Key',
+        'label_field':'Label',
+        'description_field':'Description'
+    } 
+
+    main(config)
