@@ -14,8 +14,6 @@ Generates following model files from constitution XML:
 - encoded_segments.json
 - segments_matrix.json
 
-Also serialises configuration dictionary into config.json
-
 This process DOES NOT segment constitution sections.
 
 """

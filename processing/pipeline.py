@@ -5,42 +5,15 @@ __author__      = 'Roy Gardner'
 __copyright__   = 'Copyright 2025, Roy Gardner and Sally Gardner'
 
 """
-Pipeline for processing various file types using optional segmentation and encoding using a semantic similarity model.
+Pipeline for processing:
+1. In-force national constitutions from the CCP corpus. Constitutions are in XML format.
+2. The CCP ontotogy of topics in a CSV.
 
-Supported file types and their processing modules are:
+Google's Universal Sentence Encoders v4 provides encoding of constitution text segment and topics.
 
-- CCP constitution XML files: process_constitutions.py
-- Text documents of various types: process_documents.py
-- Excel files: process_xlsx.py
-- CSV files: process_csv.py
+Configuration dictionaries supply data required to process constitutions and topics.
 
-The core file set is CCP constitutions. Other corpora are provided to illustrate the processing of other file types, segmentation,
-and multilingual capabilities.
-
-spaCy English and Spanish language models are used for text segmentation. Various version of the models are provided. 
-Segmentation is not supported for constitution XML
-
-Google Universal Sentence Encoders (USE v4 for English, USE multilingual v3 for Spanish) provide encoding of text segments.
-
-Configuration dictionaries supply the following fields for all file types:
-
-'run': True|False. True if want to run processor else false
-'processor': Processor module name. The processor .py file must be imported.
-'data_path': Path to source files containing text to be segmented and encoded.
-'model_path': Path to destination of segments, encodings, and supporting files.
-'encoder_path': Path to encoder.
-'spacy_path': Path to spaCy model used for segmentation.
-'label': Name of process.
-'description':Description of process.
-
-The configuration for CCP XML files contain this customisable field:
-'element_types': ['body','list'] which define the XML elements containing the text sections that are encoded.
-
-The configurations for CCP XML files contain these customisable fields:
-'data_fields': A list of names of columns that contain text to process.
-'id_field': The column name to use as a row identifier. If empty or missing the row number is used.
-
-NOTE: Excel and CSV fields must contain a header row containing column names.
+This file outputs a topic-segment semantic similarity matrix.
 
 """
 
@@ -52,10 +25,10 @@ from utilities import build_topic_segments_matrix
 
 def main(config):
 
-    print(f"Processing constitutions\n")
+    print(f"\nProcessing constitutions\n")
     segment_encodings = config['constitutions']['processor'].process(config)
 
-    print(f"Processing ontotogy\n")
+    print(f"\nProcessing ontotogy\n")
     topic_encodings = config['ontology']['processor'].process(config)
     
     # Build the topic-segment matrix

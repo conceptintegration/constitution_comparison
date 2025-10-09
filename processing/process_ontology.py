@@ -6,13 +6,14 @@ __copyright__   = 'Copyright 2025, Roy Gardner and Sally Gardner'
 
 
 """
-This code processes the hierarchical versions of the CCP ontology:
 
-1. Parse ontology source files into a dictionary and then serialise to schema-compliant CSV.
-2. Generate encodings for the concatenated label and description fields of terminal node topics.
-3. Generate list of encoded topics in same order as the encodings.
+Generates following model files from the CCP ontology:
 
-TODO: Serialisation could be moved to a function because it should be ontology-agnostic.
+- topics_dict.json
+- topic_encodings.json
+- encoded_topics.json
+
+Encoded topic text comprises the concatenated topic label and topic description.
 
 """
 
