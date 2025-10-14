@@ -50,8 +50,8 @@ We apply kernel density estimation (KDE) to observed distributions. KDE is a non
 After installation, open a new terminal window (Command Prompt or PowerShell on Windows, Terminal on macOS/Linux) and create the environment:
 
 ```
-conda create -n sat python=3.9.21 pip jupyter
-conda activate sat
+conda create -n constitution_comparison python=3.9.21 pip jupyter
+conda activate constitution_comparison
 ```
 
 ### Step 3: Obtain the Repository
