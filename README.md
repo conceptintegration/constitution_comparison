@@ -9,17 +9,211 @@ Semantic alignment is an estimation of the semantic similarity of two population
 
 We apply kernel density estimation (KDE) to observed distributions. KDE is a non-parametric method used to estimate the probability density function (PDF) of observed data (Silverman, B.W., 1986). Using integration, we determine the area under a PDF $p$ within a similarity score interval $I$ with limits $[a,1.0]$. The area $p$ is the probability that a similarity score $x$ is in the interval and is our measure of semantic alignment $A$.
 
-## Requirements
+## System Requirements
 
-A Python installation capable of running Jupyter notebooks, for example, Anaconda.
+- **Operating Systems**: macOS (Intel or ARM), Linux, or Windows
+- **RAM**: Minimum 8GB recommended, 16GB+ for large datasets
+- **Storage**: At least 5GB of free space
+- **Python**: Version 3.9.21 (managed via Anaconda)
 
-## Installation
+## Quick Start
 
-1. Clone the repo to a suitable location on your local machine.
-2. Open `installer.ipynb` and run the installation cell to install the `data` and `model` directories. This only needs to be done once.
-3. Open `constitution_comparison.ipynb` and run the cells in order.
+1. Install [Anaconda](https://www.anaconda.com/download)
+2. Open a new terminal window and run:
+   ```
+   conda create -n constitution_comparison python=3.9.21 pip jupyter
+   conda activate constitution_comparison
+   ```
+3. Clone or download this repository
+4. Navigate to the repository directory and install required packages:
+   ```
+   pip install -r required_packages.txt
+   ```
+5. Launch Jupyter Notebook:
+   ```
+   jupyter notebook
+   ```
+6. Open `installer.ipynb` and select **"Run All Cells"** from the "Run" tab
+
+---
+
+## Detailed Installation Instructions
+
+### Step 1: Download and Install Anaconda
+
+- Download and install [Anaconda](https://www.anaconda.com/download)
+- Accept the default installation settings
+- Choose to initialize Conda when prompted during installation
+
+### Step 2: Create Conda Environment
+
+After installation, open a new terminal window (Command Prompt or PowerShell on Windows, Terminal on macOS/Linux) and create the environment:
+
+```
+conda create -n sat python=3.9.21 pip jupyter
+conda activate sat
+```
+
+### Step 3: Obtain the Repository
+
+The recommended method is to use GitHub Desktop to clone the repository, but you can also download it as a ZIP file.
+
+The repository includes:
+
+- `analysis/`: Jupyter notebook (`sat_expansion_pipeline.ipynb`.), `_library` folder with Python code, and `outputs/` folder with paper results
+- `cython/`: Prebuilt shared objects (`angular_distance.so`) for Mac Intel, Mac ARM, and Linux Intel
+- `installer.ipynb`: Jupyter notebook for installing data and NLP model resources
+- `processing/`: Python code for building the CCP data model
+- `required_packages.txt`: Required Python packages for your Conda environment
+- `README.md`: This file
+
+### Step 4: Install Required Packages
+
+Navigate to the repository directory in your terminal. For example:
+
+```
+cd "/Users/janedoe/Downloads/constitution_comparison"
+```
+
+Then install the required packages:
+
+```
+pip install -r required_packages.txt
+```
+
+### Step 5: Launch Jupyter Notebook
+
+With the `constitution_comparison` environment activated, run:
+
+```
+jupyter notebook
+```
+
+This will open a new browser tab with the Jupyter interface.
+
+### Step 6: Run the Installer
+
+Using Jupyter, navigate to the repository folder and open `installer.ipynb`. Select **"Run All Cells"** from the "Run" menu.
+
+This will populate your top-level directory with:
+
+- `data/`: Constitutions and CCP ontology required to build data models
+- `model/`: Serialized objects from constitution text processing
+- `use-4/`: Universal Sentence Encoder model version 4
+
+Depending on your machine and internet connection, this may take several minutes.
+
+---
+
+## Platform-Specific Step: Configure `angular_distance.so`
+
+The `processing/` directory includes `angular_distance.so` compiled for Mac Intel by default.
+
+### Pre-Compiled Versions
+
+If you're using one of these platforms, copy the appropriate file from the `cython/` subdirectories:
+- Mac Intel: `cython/mac_intel/angular_distance.so`
+- Mac ARM (M1/M2): `cython/mac_arm/angular_distance.so`
+- Linux Intel: `cython/linux_intel/angular_distance.so`
+
+### Building Your Own Version
+
+If you're on a different architecture, build your own shared object file:
+
+1. Navigate to the `cython/` folder
+2. Run:
+   ```
+   conda install cython
+   python setup.py build_ext --inplace
+   ```
+3. Rename the generated file (e.g., `angular_distance.cpython-39-darwin.so`) to `angular_distance.so`
+4. Move the file to `analysis/_library` and `processing/`, replacing the existing files
+
+Ensure these steps are performed within the activated `sat` environment.
+
+---
+
+## Data Processing
+
+### Running `pipeline.py`
+
+`pipeline.py` processes data sources located in `../data/`.
+
+Steps:
+
+1. Navigate to the `processing/` directory in your terminal
+2. Run the pipeline:
+   ```
+   python pipeline.py
+   ```
+
+The pipeline automatically:
+- Detects or uses specified data types
+- Creates JSON files in `../model/`
+
+---
+
+## Analysis and Visualization
+
+Using Jupyter, navigate to the `analysis/` folder and open `constitution_comparison.ipynb`.
 
 
+Run the first cell to complete initialization. Once initialized, you can run other cells as needed to perform specific analyses or visualizations.
 
+The notebook contains detailed documentation for each analysis step.
 
+---
 
+## Tutorial
+
+For a complete walkthrough of these tools, check out our [video tutorial](https://www.youtube.com/watch?v=sm_0M5XHkk0&t=15s).
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+1. **"No module named X" error**: Make sure you've installed all required packages and activated the `sat` environment
+   ```
+   conda activate sat
+   pip install -r required_packages.txt
+   ```
+
+2. **Shared object/DLL loading issues**: Ensure you're using the correct `angular_distance.so` file for your system architecture
+
+3. **Memory errors**: If you encounter memory errors during processing, try reducing batch sizes in `pipeline.py` or processing smaller subsets of data
+
+4. **Jupyter kernel dies**: Increase the memory limit for your Jupyter kernel or reduce the size of data being processed in a single cell
+
+5. **Pipeline configuration errors**: Check that processor types are correctly specified and required fields are present for each data type
+
+### Getting Help
+
+If you encounter any obstacles not covered in this documentation, please [click here](https://github.com/conceptintegration/SAT-method/issues/new) to submit an issue to the repository. A GitHub account is required. Please include the following in your submission:
+
+- Your operating system and version
+- Python version (`python --version`)
+- The complete error message
+- Steps to reproduce the issue
+- Dataset type and configuration used
+
+For any other questions or additional information, please contact Matthew Martin (mjmartin@utexas.edu).
+
+---
+
+## License and Citation
+
+### License
+
+This project is licensed under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
+
+---
+
+## Funding Acknowledgement
+
+This material is based upon work supported by the National Science Foundation under Grant Number 2315189. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the National Science Foundation (NSF). The research team deeply appreciates NSF’s Accountable Institutions and Behavior program and Human Networks and Data Science program for this support.
+
+---
+
+Happy analyzing!
