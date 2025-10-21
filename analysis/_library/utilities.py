@@ -2,9 +2,15 @@
 # -*- coding: utf-8 -*-
 
 __author__      = 'Roy Gardner'
-__copyright__   = 'Copyright 2023, Roy and Sally Gardner'
+__copyright__   = 'Copyright 2023-2025, Roy and Sally Gardner'
 
 from packages import *
+
+twenty_distinct_colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0',\
+                        '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324',\
+                        '#800000', '#aaffc3', '#808000', '#ffd8b1', '#000075', '#808080', '#ffffff',\
+                        '#000000', '#fffac8']
+
 
 def do_load(model_path,exclusion_list=[],verbose=True):
     if verbose:
@@ -22,25 +28,6 @@ def do_load(model_path,exclusion_list=[],verbose=True):
         print('Finished loading model.')
     return model_dict
 
-def popup(text):
-    display(Javascript("alert('{}')".format(text)))
-
-def alert(msg):
-    from IPython.display import Javascript
-
-    def popup(text):
-        display(Javascript("alert('{}')".format(text)))
-    popup(msg)
-
-def encode_text(text_list, encoder):
-    """
-    Get a list of encoding vectors for the text segments in text_list
-    param text_list: A list of strings containing text to be encoded
-    param encoder: The encoder, e.g. USE v4
-    return A list of encoding vectors in the same order as text_list
-    """
-    encodings = encoder(text_list)
-    return np.array(encodings).tolist()
 
 
 
