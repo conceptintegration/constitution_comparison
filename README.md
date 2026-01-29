@@ -172,7 +172,7 @@ The notebook contains detailed documentation for each analysis step.
 
 ## Tutorial
 
-For a complete walkthrough of these tools, check out our [video tutorial](https://www.youtube.com/watch?v=sm_0M5XHkk0&t=15s).
+For a complete walkthrough of this tool, check out our [video tutorial](https://www.youtube.com/watch?v=ZUnUrb7oqmI).
 
 ---
 
@@ -218,8 +218,7 @@ This project is licensed under the [CC BY-NC-SA 4.0](https://creativecommons.org
 
 If you use the Constitution Comparison Tool or this code in your research, please cite:
 
-Gardner, R., Elkins, Z., Moran, A., Cruz, A., Martin, M., & Pérez, G. (2026). 
-Constitution Comparison Tool. Comparative Constitutions Project, University of Texas at Austin.
+Gardner, R., Elkins, Z., Moran, A., Cruz, A., Martin, M., & Pérez, G. (2026). Constitution Comparison Tool. Comparative Constitutions Project, University of Texas at Austin.
 
 ---
 
