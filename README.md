@@ -15,6 +15,10 @@ Semantic alignment is an estimation of the semantic similarity of two population
 
 We apply kernel density estimation (KDE) to observed distributions. KDE is a non-parametric method used to estimate the probability density function (PDF) of observed data (Silverman, B.W., 1986). Using integration, we determine the area under a PDF $p$ within a similarity score interval $I$ with limits $[a,1.0]$. The area $p$ is the probability that a similarity score $x$ is in the interval and is our measure of semantic alignment $A$.
 
+## Tutorial
+
+For a complete walkthrough of this tool, check out our [video tutorial](https://www.youtube.com/watch?v=ZUnUrb7oqmI).
+
 ## System Requirements
 
 - **Operating Systems**: macOS (Intel or ARM), Linux, or Windows
@@ -163,16 +167,9 @@ The pipeline automatically:
 
 Using Jupyter, navigate to the `analysis/` folder and open `constitution_comparison.ipynb`.
 
-
 Run the first cell to complete initialization. Once initialized, you can run other cells as needed to perform specific analyses or visualizations.
 
 The notebook contains detailed documentation for each analysis step.
-
----
-
-## Tutorial
-
-For a complete walkthrough of this tool, check out our [video tutorial](https://www.youtube.com/watch?v=ZUnUrb7oqmI).
 
 ---
 
@@ -196,7 +193,7 @@ For a complete walkthrough of this tool, check out our [video tutorial](https://
 
 ### Getting Help
 
-If you encounter any obstacles not covered in this documentation, please [click here](https://github.com/conceptintegration/SAT-method/issues/new) to submit an issue to the repository. A GitHub account is required. Please include the following in your submission:
+If you encounter any obstacles not covered in this documentation, please [click here](https://github.com/conceptintegration/constitution_comparison/issues/new) to submit an issue to the repository. A GitHub account is required. Please include the following in your submission:
 
 - Your operating system and version
 - Python version (`python --version`)
