@@ -204,7 +204,16 @@ For any other questions or additional information, please contact Matthew Martin
 
 ## License and Citation
 
+### License
+
 This project is licensed under the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
+
+### Citation
+
+If you use the Constitution Comparison Tool or this code in your research, please cite:
+
+Gardner, R., Elkins, Z., Moran, A., Cruz, A., Martin, M., & Pérez, G. (2026). 
+Constitution Comparison Tool. Comparative Constitutions Project, University of Texas at Austin.
 
 ---
 
